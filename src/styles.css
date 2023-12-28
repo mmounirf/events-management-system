@@ -1,0 +1,4 @@
+body {
+  transition: color 0.5s ease, background-color 0.5s ease;
+  background-color:light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+}
