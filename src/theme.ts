@@ -1,6 +1,11 @@
 import { createTheme } from "@mantine/core";
 
 export const theme = createTheme({
+  fontFamily:
+    "Noto Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji",
+  fontFamilyMonospace:
+    "Noto Sans Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace",
+  headings: { fontFamily: "Noto Sans, sans-serif", fontWeight: "800" },
   colors: {
     brand: [
       "#ebefff",
@@ -16,6 +21,6 @@ export const theme = createTheme({
     ],
   },
   primaryColor: "brand",
-  defaultRadius: "md",
+  defaultRadius: "lg",
   cursorType: "pointer",
 });

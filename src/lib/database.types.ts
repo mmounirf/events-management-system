@@ -11,37 +11,49 @@ export interface Database {
     Tables: {
       events: {
         Row: {
+          cover: string | null
           created_at: string
-          date: string
-          id: number
-          is_public: boolean
+          description: string | null
+          end: string
+          id: string
+          is_all_day: boolean
           location: string | null
-          long_description: string | null
-          name: string
-          short_description: string | null
-          user_id: string
+          logo: string | null
+          owner: string
+          recurrence_exception: string | null
+          recurrence_rule: string | null
+          start: string
+          title: string
         }
         Insert: {
+          cover?: string | null
           created_at?: string
-          date: string
-          id?: number
-          is_public?: boolean
+          description?: string | null
+          end: string
+          id?: string
+          is_all_day: boolean
           location?: string | null
-          long_description?: string | null
-          name: string
-          short_description?: string | null
-          user_id?: string
+          logo?: string | null
+          owner?: string
+          recurrence_exception?: string | null
+          recurrence_rule?: string | null
+          start: string
+          title?: string
         }
         Update: {
+          cover?: string | null
           created_at?: string
-          date?: string
-          id?: number
-          is_public?: boolean
+          description?: string | null
+          end?: string
+          id?: string
+          is_all_day?: boolean
           location?: string | null
-          long_description?: string | null
-          name?: string
-          short_description?: string | null
-          user_id?: string
+          logo?: string | null
+          owner?: string
+          recurrence_exception?: string | null
+          recurrence_rule?: string | null
+          start?: string
+          title?: string
         }
         Relationships: []
       }

@@ -59,7 +59,7 @@ export default function Verify() {
             <Title order={2} fw={500} mb="lg">
                 Verify your account
             </Title>
-            <Paper p="xl" withBorder w={500} radius="lg">
+            <Paper p="xl" withBorder w={500}>
                 <Stack>
                     <PinInput {...form.getInputProps('otp')} name="otp" autoFocus size="xl" length={6} placeholder="—" type="number" inputMode="numeric" onComplete={verify} oneTimeCode />
                 </Stack>

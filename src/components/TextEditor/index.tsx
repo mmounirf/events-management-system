@@ -9,15 +9,12 @@ import Superscript from "@tiptap/extension-superscript";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
-import { useEditor, type Content, type Editor, type EditorEvents } from '@tiptap/react';
+import { EditorContent, EditorOptions, useEditor, type Content, type Editor } from '@tiptap/react';
 import StarterKit from "@tiptap/starter-kit";
 
-type TextEditorHookType = {
-    content?: Content;
-    onUpdate?: (props: EditorEvents['update']) => void
-}
 
-export function useTextEditor({ content, onUpdate }: TextEditorHookType) {
+export function useTextEditor(options: Partial<EditorOptions>) {
+
     return useEditor({
         extensions: [
             StarterKit,
@@ -30,9 +27,18 @@ export function useTextEditor({ content, onUpdate }: TextEditorHookType) {
             Color,
             TextAlign.configure({ types: ["heading", "paragraph"] })
         ],
-        content,
-        onUpdate
+        ...options
     });
+}
+
+export function TextEditorContent({ content }: { content: Content }) {
+    const editor = useTextEditor({ content, editable: false });
+
+    if (!editor) {
+        return null
+    }
+
+    return <EditorContent editor={editor} />
 }
 
 
@@ -48,7 +54,7 @@ export default function TextEditor({ label, editor }: { label: string, editor: E
         <Box>
             <InputLabel>{label}</InputLabel>
 
-            <RichTextEditor editor={editor}>
+            <RichTextEditor editor={editor} >
 
                 {/* <BubbleMenu editor={editor}>
                     <RichTextEditorControlsGroup>

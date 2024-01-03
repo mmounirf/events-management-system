@@ -24,12 +24,10 @@ export default function SignUpPage() {
     const register = async () => {
         const { data, error } = await supabase.auth.signInWithOtp({ email: form.values.email, options: { shouldCreateUser: false, data: { name: "Mou" } } });
 
-        console.log(data)
-        console.log(error)
         if (error) {
             showError({ message: error.message, title: error.name });
         }
-        console.log(data)
+
         if (data.user === null && data.session === null && error === null) {
             navigate('/verify')
         }
@@ -40,7 +38,7 @@ export default function SignUpPage() {
             <Title order={2} fw={500} mb="lg">
                 Create your Eventor account
             </Title>
-            <Paper p="xl" withBorder w={500} radius="lg">
+            <Paper p="xl" withBorder w={500}>
                 <form onSubmit={form.onSubmit(() => register())}>
                     <Stack>
                         <TextInput

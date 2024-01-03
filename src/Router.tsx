@@ -13,7 +13,7 @@ const Verify = lazy(() => import("./pages/Auth/Verify.page"));
 const HomePage = lazy(() => import("./pages/Home/Home.page"));
 
 const EventsPage = lazy(() => import("./pages/Events/Events.page"));
-const CreateEventPage = lazy(() => import("./pages/Events/CreateEvent.page"));
+const CreateEventPage = lazy(() => import("./pages/CreateEvent/CreateEvent.page"));
 
 const router = createBrowserRouter([
     {

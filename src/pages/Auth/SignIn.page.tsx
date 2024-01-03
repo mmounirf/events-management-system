@@ -43,7 +43,7 @@ export default function SignIn() {
             <Title order={2} fw={500} mb="lg">
                 Sign in to Eventor
             </Title>
-            <Paper p="xl" withBorder w={500} radius="lg">
+            <Paper p="xl" withBorder w={500}>
                 <form onSubmit={form.onSubmit(() => login())}>
                     <Stack>
                         <TextInput

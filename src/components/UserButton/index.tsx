@@ -24,7 +24,6 @@ export default function UserButton() {
             <Menu.Target>
                 <Button
                     size="md"
-                    radius="sm"
                     variant="subtle"
                     leftSection={
                         <Avatar size="sm" color="brand" radius="xl">
