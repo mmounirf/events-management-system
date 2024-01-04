@@ -21,6 +21,6 @@ export const theme = createTheme({
     ],
   },
   primaryColor: "brand",
-  defaultRadius: "lg",
+  defaultRadius: "md",
   cursorType: "pointer",
 });

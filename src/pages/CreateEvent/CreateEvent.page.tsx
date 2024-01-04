@@ -3,7 +3,7 @@ import {
   Button,
   Center,
   Container,
-  Group,
+  Flex,
   Loader,
   Paper,
   SegmentedControl,
@@ -13,41 +13,38 @@ import {
   Textarea,
   rem
 } from "@mantine/core";
-import { DateTimePicker, DateValue } from "@mantine/dates";
+import { DateTimePicker } from "@mantine/dates";
 import "@mantine/dates/styles.css";
-import { isNotEmpty, useForm } from "@mantine/form";
+import { isNotEmpty } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { IconArrowRight, IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { useState } from "react";
+import { CreateEventFormProvider, useCreateEventForm } from "./CreateEventFormProvider";
 import CoverImageInput from "./components/CoverImageInput/CoverImageInput";
 import IconImageInput from "./components/IconImageInput/IconImageInput";
 import InlineTextInput from "./components/InlineTextInput/InlineTextInput";
 
-type EventFormType = {
-  name: string;
-  location: string;
-  date: DateValue;
-  is_public: boolean;
-  short_description: string;
-  long_description: string;
-};
 
 export default function CreateEventPage() {
   const [loading, setLoading] = useState(false);
-  const form = useForm<EventFormType>({
+  const form = useCreateEventForm({
     initialValues: {
-      name: "",
+      cover: null,
+      logo: null,
+      title: "",
       location: "",
-      date: null,
-      is_public: false,
-      short_description: "",
-      long_description: "",
+      start: "",
+      end: "",
+      recurrence_rule: null,
+      recurrence_exception: null,
+      is_all_day: false,
+      description: "",
     },
 
     validate: {
-      name: isNotEmpty("Event name is required"),
-      location: isNotEmpty("Event location is required"),
-      date: isNotEmpty("Event date is required"),
+      title: isNotEmpty("Event name is required"),
+      start: isNotEmpty("Event start date is required"),
+      end: isNotEmpty("Event end date is required"),
     },
   });
 
@@ -55,8 +52,10 @@ export default function CreateEventPage() {
 
   const createEvent = async () => {
     setLoading(true);
-
+    form.validate()
+    console.log('form valid', form.isValid())
     console.log(form.values)
+    console.log(form.errors)
 
     const createEventProgress = showNotification({
       message: "Creating event...",
@@ -94,80 +93,96 @@ export default function CreateEventPage() {
     setLoading(false);
   };
 
+
+  console.log(form.errors)
+
   return (
     <Container fluid p={0}>
-      <CoverImageInput onChange={console.log} />
+      <CreateEventFormProvider form={form}>
+        <form onSubmit={form.onSubmit(() => createEvent())}>
+          <CoverImageInput onChange={console.log} />
 
-      <Group gap={0} align="center" wrap="nowrap" grow={false}>
-        <IconImageInput onChange={console.log} />
-        <InlineTextInput value="New event" onChange={console.log} />
-      </Group>
+          <Container fluid>
+            <Flex gap="md" align="center" wrap="nowrap">
+              <IconImageInput onChange={console.log} />
+              <InlineTextInput />
+            </Flex>
+          </Container>
 
-      <Container fluid mt="md">
-        <Paper p="xl" withBorder>
-          <form onSubmit={form.onSubmit(() => createEvent())}>
-            <Stack>
-              <TextInput required label="Event name" placeholder="Event name" {...form.getInputProps("name")} />
-              <TextInput
-                required
-                label="Event location"
-                placeholder="Event location"
-                {...form.getInputProps("location")}
-              />
+          <Container fluid mt="md">
+            <Paper p="xl" withBorder>
 
-              <DateTimePicker
-                required
-                label="Start date"
-                placeholder="Start date"
-                valueFormat="ddd. DD MMM. YYYY - hh:mmA"
-                clearable
-                {...form.getInputProps("date")}
-              />
+              <Stack>
+                <TextInput
+                  label="Event location"
+                  placeholder="Event location"
+                  {...form.getInputProps("location")}
+                />
 
-              <SegmentedControl
-                value={`${form.values.is_public}`}
-                onChange={(value) => form.setFieldValue("is_public", value === "true")}
-                data={[
-                  {
-                    value: "true",
-                    label: (
-                      <Center style={{ gap: 10 }}>
-                        <IconEye style={{ width: rem(16), height: rem(16) }} />
-                        <span>Public event</span>
-                      </Center>
-                    ),
-                  },
-                  {
-                    value: "false",
-                    label: (
-                      <Center style={{ gap: 10 }}>
-                        <IconEyeClosed style={{ width: rem(16), height: rem(16) }} />
-                        <span>Private event</span>
-                      </Center>
-                    ),
-                  },
-                ]}
-              />
+                <DateTimePicker
 
-              <Textarea
-                label="Short description"
-                placeholder="Event short description"
-                {...form.getInputProps("short_description")}
-              />
+                  label="Start date"
+                  placeholder="Start date"
+                  valueFormat="ddd. DD MMM. YYYY - hh:mmA"
+                  clearable
+                  {...form.getInputProps("start")}
+                />
 
-              <TextEditor label="Long description" editor={editor} />
+                <DateTimePicker
 
-              <Button
-                type="submit"
-                fullWidth
-                rightSection={loading ? <Loader size="xs" color="white" /> : <IconArrowRight width={18} height={18} />}
-              >
-                <Text fw={500}>Create new event</Text>
-              </Button>
-            </Stack>
-          </form>
-        </Paper>
-      </Container>
+                  label="End date"
+                  placeholder="End date"
+                  valueFormat="ddd. DD MMM. YYYY - hh:mmA"
+                  clearable
+                  {...form.getInputProps("end")}
+                />
+
+                <SegmentedControl
+                  value={`${form.values.is_public}`}
+                  onChange={(value) => form.setFieldValue("is_public", value === "true")}
+                  data={[
+                    {
+                      value: "true",
+                      label: (
+                        <Center style={{ gap: 10 }}>
+                          <IconEye style={{ width: rem(16), height: rem(16) }} />
+                          <span>Public event</span>
+                        </Center>
+                      ),
+                    },
+                    {
+                      value: "false",
+                      label: (
+                        <Center style={{ gap: 10 }}>
+                          <IconEyeClosed style={{ width: rem(16), height: rem(16) }} />
+                          <span>Private event</span>
+                        </Center>
+                      ),
+                    },
+                  ]}
+                />
+
+                <Textarea
+                  label="Short description"
+                  placeholder="Event short description"
+                  {...form.getInputProps('description')}
+                />
+
+                <TextEditor label="Long description" editor={editor} />
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  rightSection={loading ? <Loader size="xs" color="white" /> : <IconArrowRight width={18} height={18} />}
+                >
+                  <Text fw={500}>Create new event</Text>
+                </Button>
+              </Stack>
+
+            </Paper>
+          </Container>
+        </form>
+      </CreateEventFormProvider>
     </Container>
   );
 }

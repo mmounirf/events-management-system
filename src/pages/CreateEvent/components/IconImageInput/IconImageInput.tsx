@@ -23,7 +23,7 @@ export default function IconImageInput({ onChange, src }: IconImageInputProps) {
 
     if (imageUrl === null) {
         return (
-            <Paper shadow="md" withBorder p="xs" h={150} w={150} miw={150} className={classes.container}>
+            <Paper shadow="md" withBorder p="xs" className={classes.container}>
                 <input type="file" ref={iconImageInputRef} accept="image/png,image/jpeg" hidden onChange={onInputChange} />
                 <UnstyledButton
                     className={classes.iconImageButton}
@@ -43,7 +43,7 @@ export default function IconImageInput({ onChange, src }: IconImageInputProps) {
     }
 
     return (
-        <Paper shadow="md" withBorder p="xs" h={150} w={150} miw={150} className={classes.container}>
+        <Paper shadow="md" withBorder p="xs" className={classes.container}>
             <input type="file" ref={iconImageInputRef} accept="image/png,image/jpeg" hidden onChange={onInputChange} />
 
             <UnstyledButton
