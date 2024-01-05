@@ -42,7 +42,6 @@ export default function Scheduler() {
         description: { name: 'description' },
         startTime: { name: 'start' },
         endTime: { name: 'end' },
-        isAllDay: { name: 'is_all_day' }
 
     }
 

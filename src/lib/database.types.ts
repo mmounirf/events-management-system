@@ -16,7 +16,6 @@ export interface Database {
           description: string | null
           end: string
           id: string
-          is_all_day: boolean
           location: string | null
           logo: string | null
           owner: string
@@ -31,7 +30,6 @@ export interface Database {
           description?: string | null
           end: string
           id?: string
-          is_all_day: boolean
           location?: string | null
           logo?: string | null
           owner?: string
@@ -46,7 +44,6 @@ export interface Database {
           description?: string | null
           end?: string
           id?: string
-          is_all_day?: boolean
           location?: string | null
           logo?: string | null
           owner?: string

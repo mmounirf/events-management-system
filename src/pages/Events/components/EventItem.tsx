@@ -1,16 +1,14 @@
-import { TextEditorContent } from "@/components/TextEditor";
+import TextEditorContent from "@/components/TextEditor/TextEditorContent";
 import { Tables } from "@/lib/database.types";
 import { getDateTime } from "@/utils/datetimeHelpers";
 import { Avatar, Flex, Group, Paper, Text, Title, rem } from "@mantine/core";
 import { IconArrowRight, IconCalendarEvent, IconMapPin } from "@tabler/icons-react";
+import dayjs from "dayjs";
 
-export default function EventItem({ event }: { event: Tables<'events'> }) {
-
-    const { title, start, end, description, is_all_day } = event;
+export default function EventItem({ event }: { event: Tables<"events"> }) {
+    const { title, start, end, description } = event;
 
     const { year, month, dayOfMonth, dayOfWeek, hour, minute, ampm, fullDate } = getDateTime(start);
-
-
 
     // <Text size="sm" c="dimmed">{getDiff(event.end, event.start) > 1 ? `${getDiff(event.end, event.start)} days event` : '1 day event'}</Text>
 
@@ -20,48 +18,55 @@ export default function EventItem({ event }: { event: Tables<'events'> }) {
     // </Group>
 
 
+    const isSingleDayEvent = dayjs(start).isSame(dayjs(end), 'day')
+
     const getEventDate = () => {
-        if (is_all_day) {
+        if (isSingleDayEvent) {
             return (
                 <Group gap={0} align="center">
-                    <IconCalendarEvent color="var(--mantine-color-dimmed)" style={{ width: rem(18), height: rem(18) }} stroke={2} />
-                    <Text size="sm" c="dimmed">{getDateTime(event.start).fullDate}</Text>
+                    <IconCalendarEvent
+                        color="var(--mantine-color-dimmed)"
+                        style={{ width: rem(18), height: rem(18) }}
+                        stroke={2}
+                    />
+                    <Text size="sm" c="dimmed">
+                        {getDateTime(event.start).fullDate}
+                    </Text>
                 </Group>
-            )
+            );
         }
 
         return (
             <Group gap={0} align="center">
                 <IconCalendarEvent color="var(--mantine-color-dimmed)" style={{ width: rem(18), height: rem(18) }} stroke={2} />
-                <Text size="sm" c="dimmed">{getDateTime(event.start).fullDate}</Text>
+                <Text size="sm" c="dimmed">
+                    {getDateTime(event.start).fullDate}
+                </Text>
                 <IconArrowRight color="var(--mantine-color-dimmed)" style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                <Text size="sm" c="dimmed">{getDateTime(event.end).fullDate}</Text>
+                <Text size="sm" c="dimmed">
+                    {getDateTime(event.end).fullDate}
+                </Text>
             </Group>
-        )
+        );
     };
-
 
     return (
         <Paper withBorder p="md">
-
             <Group align="center">
                 <Avatar size="xl" />
                 <Flex direction="column">
-
                     <Title>{title}</Title>
                     <Group gap={0} align="center">
                         <IconMapPin color="var(--mantine-color-dimmed)" style={{ width: rem(18), height: rem(18) }} stroke={2} />
-                        <Text size="sm" c="dimmed">{event.location}</Text>
+                        <Text size="sm" c="dimmed">
+                            {event.location}
+                        </Text>
                     </Group>
 
-
                     {getEventDate()}
-
-
                 </Flex>
             </Group>
             <TextEditorContent content={event.description} />
-
         </Paper>
-    )
+    );
 }

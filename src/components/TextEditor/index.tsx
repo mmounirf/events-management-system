@@ -1,72 +1,19 @@
-import { Box, InputLabel, Tooltip } from '@mantine/core';
-import { Link, RichTextEditor } from '@mantine/tiptap';
-import '@mantine/tiptap/styles.css';
-import { IconCodeDots } from '@tabler/icons-react';
-import { Color } from "@tiptap/extension-color";
-import Highlight from "@tiptap/extension-highlight";
-import SubScript from "@tiptap/extension-subscript";
-import Superscript from "@tiptap/extension-superscript";
-import TextAlign from "@tiptap/extension-text-align";
-import TextStyle from "@tiptap/extension-text-style";
-import Underline from "@tiptap/extension-underline";
-import { EditorContent, EditorOptions, useEditor, type Content, type Editor } from '@tiptap/react';
-import StarterKit from "@tiptap/starter-kit";
+import { Box, InputLabel, Tooltip } from "@mantine/core";
+import { RichTextEditor } from "@mantine/tiptap";
+import "@mantine/tiptap/styles.css";
+import { IconCodeDots } from "@tabler/icons-react";
+import { type Editor } from "@tiptap/react";
 
-
-export function useTextEditor(options: Partial<EditorOptions>) {
-
-    return useEditor({
-        extensions: [
-            StarterKit,
-            Underline,
-            Link,
-            Superscript,
-            SubScript,
-            Highlight,
-            TextStyle,
-            Color,
-            TextAlign.configure({ types: ["heading", "paragraph"] })
-        ],
-        ...options
-    });
-}
-
-export function TextEditorContent({ content }: { content: Content }) {
-    const editor = useTextEditor({ content, editable: false });
-
+export default function TextEditor({ label, editor }: { label: string; editor: Editor | null }) {
     if (!editor) {
-        return null
+        return null;
     }
-
-    return <EditorContent editor={editor} />
-}
-
-
-export default function TextEditor({ label, editor }: { label: string, editor: Editor | null }) {
-
-    if (!editor) {
-        return null
-    }
-
-
 
     return (
         <Box>
             <InputLabel>{label}</InputLabel>
 
-            <RichTextEditor editor={editor} >
-
-                {/* <BubbleMenu editor={editor}>
-                    <RichTextEditorControlsGroup>
-                        <RichTextEditor.Bold />
-                        <RichTextEditor.Italic />
-                        <RichTextEditor.Underline />
-                        <RichTextEditor.Strikethrough />
-                        <RichTextEditor.Highlight />
-                        <RichTextEditor.Link />
-                    </RichTextEditorControlsGroup>
-                </BubbleMenu> */}
-
+            <RichTextEditor editor={editor}>
                 <RichTextEditor.Toolbar sticky stickyOffset={60}>
                     <RichTextEditor.ControlsGroup>
                         <Tooltip label="Bold" withArrow>
@@ -85,7 +32,6 @@ export default function TextEditor({ label, editor }: { label: string, editor: E
                             <RichTextEditor.Strikethrough />
                         </Tooltip>
 
-
                         <Tooltip label="Highlight" withArrow>
                             <RichTextEditor.Highlight />
                         </Tooltip>
@@ -99,22 +45,24 @@ export default function TextEditor({ label, editor }: { label: string, editor: E
                         </Tooltip>
 
                         <Tooltip label="Text Color" withArrow>
-                            <RichTextEditor.ColorPicker colors={[
-                                '#25262b',
-                                '#868e96',
-                                '#fa5252',
-                                '#e64980',
-                                '#be4bdb',
-                                '#7950f2',
-                                '#4c6ef5',
-                                '#228be6',
-                                '#15aabf',
-                                '#12b886',
-                                '#40c057',
-                                '#82c91e',
-                                '#fab005',
-                                '#fd7e14',
-                            ]} />
+                            <RichTextEditor.ColorPicker
+                                colors={[
+                                    "#25262b",
+                                    "#868e96",
+                                    "#fa5252",
+                                    "#e64980",
+                                    "#be4bdb",
+                                    "#7950f2",
+                                    "#4c6ef5",
+                                    "#228be6",
+                                    "#15aabf",
+                                    "#12b886",
+                                    "#40c057",
+                                    "#82c91e",
+                                    "#fab005",
+                                    "#fd7e14",
+                                ]}
+                            />
                         </Tooltip>
 
                         <Tooltip label="Clear Formatting" withArrow>
@@ -154,7 +102,6 @@ export default function TextEditor({ label, editor }: { label: string, editor: E
                     </RichTextEditor.ControlsGroup>
 
                     <RichTextEditor.ControlsGroup>
-
                         <Tooltip label="Superscript" withArrow>
                             <RichTextEditor.Superscript />
                         </Tooltip>
@@ -181,13 +128,10 @@ export default function TextEditor({ label, editor }: { label: string, editor: E
                             <RichTextEditor.AlignRight />
                         </Tooltip>
                     </RichTextEditor.ControlsGroup>
-
-
-
                 </RichTextEditor.Toolbar>
 
                 <RichTextEditor.Content />
             </RichTextEditor>
         </Box>
-    )
+    );
 }

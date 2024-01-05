@@ -1,23 +1,21 @@
-import TextEditor, { useTextEditor } from "@/components/TextEditor";
+import TextEditor from "@/components/TextEditor";
+import useTextEditor from "@/components/TextEditor/useTextEditor";
 import {
   Button,
-  Center,
   Container,
   Flex,
+  Group,
   Loader,
   Paper,
-  SegmentedControl,
   Stack,
   Text,
-  TextInput,
-  Textarea,
-  rem
+  TextInput
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 import { isNotEmpty } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { IconArrowRight, IconEye, IconEyeClosed } from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
 import { useState } from "react";
 import { CreateEventFormProvider, useCreateEventForm } from "./CreateEventFormProvider";
 import CoverImageInput from "./components/CoverImageInput/CoverImageInput";
@@ -35,10 +33,10 @@ export default function CreateEventPage() {
       location: "",
       start: "",
       end: "",
-      recurrence_rule: null,
-      recurrence_exception: null,
       is_all_day: false,
       description: "",
+      recurrence_rule: null,
+      recurrence_exception: null,
     },
 
     validate: {
@@ -48,7 +46,7 @@ export default function CreateEventPage() {
     },
   });
 
-  const editor = useTextEditor({ onUpdate: ({ editor }) => form.setFieldValue("long_description", editor.getHTML()) });
+  const editor = useTextEditor({ onUpdate: ({ editor }) => form.setFieldValue("description", editor.getHTML()) });
 
   const createEvent = async () => {
     setLoading(true);
@@ -93,9 +91,6 @@ export default function CreateEventPage() {
     setLoading(false);
   };
 
-
-  console.log(form.errors)
-
   return (
     <Container fluid p={0}>
       <CreateEventFormProvider form={form}>
@@ -118,57 +113,27 @@ export default function CreateEventPage() {
                   placeholder="Event location"
                   {...form.getInputProps("location")}
                 />
+                <Group grow align="center">
+                  <DateTimePicker
 
-                <DateTimePicker
+                    label="Start date"
+                    placeholder="Start date"
+                    valueFormat="ddd. DD MMM. YYYY - hh:mmA"
+                    clearable
+                    {...form.getInputProps("start")}
+                  />
 
-                  label="Start date"
-                  placeholder="Start date"
-                  valueFormat="ddd. DD MMM. YYYY - hh:mmA"
-                  clearable
-                  {...form.getInputProps("start")}
-                />
+                  <DateTimePicker
+                    label="End date"
+                    placeholder="End date"
+                    valueFormat="ddd. DD MMM. YYYY - hh:mmA"
+                    clearable
+                    {...form.getInputProps("end")}
+                  />
+                </Group>
 
-                <DateTimePicker
 
-                  label="End date"
-                  placeholder="End date"
-                  valueFormat="ddd. DD MMM. YYYY - hh:mmA"
-                  clearable
-                  {...form.getInputProps("end")}
-                />
-
-                <SegmentedControl
-                  value={`${form.values.is_public}`}
-                  onChange={(value) => form.setFieldValue("is_public", value === "true")}
-                  data={[
-                    {
-                      value: "true",
-                      label: (
-                        <Center style={{ gap: 10 }}>
-                          <IconEye style={{ width: rem(16), height: rem(16) }} />
-                          <span>Public event</span>
-                        </Center>
-                      ),
-                    },
-                    {
-                      value: "false",
-                      label: (
-                        <Center style={{ gap: 10 }}>
-                          <IconEyeClosed style={{ width: rem(16), height: rem(16) }} />
-                          <span>Private event</span>
-                        </Center>
-                      ),
-                    },
-                  ]}
-                />
-
-                <Textarea
-                  label="Short description"
-                  placeholder="Event short description"
-                  {...form.getInputProps('description')}
-                />
-
-                <TextEditor label="Long description" editor={editor} />
+                <TextEditor label="Description" editor={editor} />
 
                 <Button
                   type="submit"
