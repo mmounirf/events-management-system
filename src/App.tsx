@@ -1,6 +1,5 @@
 import { ColorSchemeScript, MantineProvider, localStorageColorSchemeManager } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { Router } from "./Router";
 import { AuthProvider } from "./context/AuthContext";
@@ -17,7 +16,6 @@ export default function App() {
     <>
       <ColorSchemeScript defaultColorScheme="dark" />
       <MantineProvider theme={theme} colorSchemeManager={colorSchemeManager} defaultColorScheme="auto">
-        <Notifications />
         <ModalsProvider>
           <AuthProvider>
             <Router />

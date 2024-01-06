@@ -19,8 +19,6 @@ export default function EventsPage() {
   return (
     <>
       <Title>Events Page</Title>
-
-
       <Stack>
         {events.map((event) => <EventItem event={event} />)}
       </Stack>

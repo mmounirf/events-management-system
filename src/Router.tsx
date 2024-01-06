@@ -1,8 +1,9 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import UnprotectedRoute from "@/components/UnprotectedRoute";
 import { LoadingOverlay } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { Suspense, lazy } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const DashboardLayout = lazy(() => import("@/components/DashboardLayout"));
 
@@ -17,70 +18,80 @@ const CreateEventPage = lazy(() => import("./pages/CreateEvent/CreateEvent.page"
 
 const router = createBrowserRouter([
     {
+        // Pathless route that acts as app layout so that notifications can consume <Link /> from react-router
         element: (
-            <ProtectedRoute>
-                <Suspense fallback={<LoadingOverlay />}>
-                    <DashboardLayout />
-                </Suspense>
-            </ProtectedRoute>
+            <>
+                <Outlet />
+                <Notifications position="top-right" />
+            </>
         ),
         children: [
             {
-                path: "/",
+                element: (
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingOverlay />}>
+                            <DashboardLayout />
+                        </Suspense>
+                    </ProtectedRoute>
+                ),
+                children: [
+                    {
+                        path: "/",
+                        element: (
+                            <Suspense fallback={<LoadingOverlay />}>
+                                <HomePage />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: "/events",
+                        element: (
+                            <Suspense fallback={<LoadingOverlay />}>
+                                <EventsPage />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: "/events/new",
+                        element: (
+                            <Suspense fallback={<LoadingOverlay />}>
+                                <CreateEventPage />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+            {
+                path: "/signin",
                 element: (
                     <Suspense fallback={<LoadingOverlay />}>
-                        <HomePage />
+                        <UnprotectedRoute>
+                            <SignIn />
+                        </UnprotectedRoute>
                     </Suspense>
                 ),
             },
             {
-                path: "/events",
+                path: "/signup",
                 element: (
                     <Suspense fallback={<LoadingOverlay />}>
-                        <EventsPage />
+                        <UnprotectedRoute>
+                            <SignUp />
+                        </UnprotectedRoute>
                     </Suspense>
                 ),
             },
             {
-                path: "/events/new",
+                path: "/verify",
                 element: (
                     <Suspense fallback={<LoadingOverlay />}>
-                        <CreateEventPage />
+                        <UnprotectedRoute>
+                            <Verify />
+                        </UnprotectedRoute>
                     </Suspense>
                 ),
-            }
-
+            },
         ],
-    },
-    {
-        path: "/signin",
-        element: (
-            <Suspense fallback={<LoadingOverlay />}>
-                <UnprotectedRoute>
-                    <SignIn />
-                </UnprotectedRoute>
-            </Suspense>
-        ),
-    },
-    {
-        path: "/signup",
-        element: (
-            <Suspense fallback={<LoadingOverlay />}>
-                <UnprotectedRoute>
-                    <SignUp />
-                </UnprotectedRoute>
-            </Suspense>
-        ),
-    },
-    {
-        path: "/verify",
-        element: (
-            <Suspense fallback={<LoadingOverlay />}>
-                <UnprotectedRoute>
-                    <Verify />
-                </UnprotectedRoute>
-            </Suspense>
-        ),
     },
 ]);
 

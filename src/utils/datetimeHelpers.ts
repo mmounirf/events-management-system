@@ -1,4 +1,5 @@
 import * as dayjs from "dayjs";
+import { default as dayjsIsToday } from "dayjs/plugin/isToday";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 export function getDateTime(datetimeString: string) {
@@ -28,4 +29,9 @@ export function timeFromNow(date: string) {
   const dateTime = dayjs(date);
 
   return dateTime.fromNow();
+}
+
+export function isSameDay(date: Date | string | dayjs.Dayjs) {
+  dayjs.extend(dayjsIsToday);
+  return dayjs(date).isToday();
 }

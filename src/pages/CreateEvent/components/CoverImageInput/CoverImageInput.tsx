@@ -1,5 +1,6 @@
 import { ChangeEventHandler, useRef, useState } from "react";
 
+import { showError } from "@/utils/errorNotification";
 import { Badge, Image, Stack, ThemeIcon, Transition, UnstyledButton, rem } from "@mantine/core";
 import { IconPhoto } from "@tabler/icons-react";
 import classes from "./CoverImageInput.module.css";
@@ -16,6 +17,16 @@ export default function CoverImageInput({ onChange, src }: CoverImageInputProps)
 
     const onInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         const selectedFile = event.target.files?.[0];
+
+        // Events bucket limit for each object is 2MB
+        if (selectedFile && selectedFile?.size > 2097152) {
+            showError({
+                title: 'The selected image cannot be uploaded.',
+                message: 'The maximum image size is 2MB'
+            });
+            event.target.value = '';
+            return;
+        }
         onChange(selectedFile);
         setImageUrl(selectedFile ? URL.createObjectURL(selectedFile) : null);
         setHovered(false);
