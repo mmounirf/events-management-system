@@ -75,7 +75,8 @@ export async function uploadFiles({
       await supabase
         .from("events")
         .update({
-          cover: `https://${import.meta.env.VITE_PROJECT_ID}.supabase.co/storage/v1/object/public/events-assets/${coverFileData.path}`,
+          cover: `https://${import.meta.env.VITE_PROJECT_ID}.supabase.co/storage/v1/object/public/events-assets/${coverFileData.path
+            }`,
         })
         .eq("id", eventId);
     }
@@ -110,7 +111,8 @@ export async function uploadFiles({
       await supabase
         .from("events")
         .update({
-          logo: `https://${import.meta.env.VITE_PROJECT_ID}.supabase.co/storage/v1/object/public/events-assets/${iconFileData.path}`,
+          logo: `https://${import.meta.env.VITE_PROJECT_ID}.supabase.co/storage/v1/object/public/events-assets/${iconFileData.path
+            }`,
         })
         .eq("id", eventId);
     }

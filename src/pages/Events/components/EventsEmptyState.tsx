@@ -40,16 +40,28 @@ export default function EventsEmptyState({ loading, count, dateRange, dateQuery,
         }
 
         if (hasSearchQuery) {
-            return <>No event name matches <Code>{searchQuery}</Code></>;
+            return (
+                <>
+                    No event name matches <Code>{searchQuery}</Code>
+                </>
+            );
         }
 
         if (hasDateQuery) {
-            return <>You don't have <Code>{dateQuery}</Code> events</>;
+            return (
+                <>
+                    You don't have <Code>{dateQuery}</Code> events
+                </>
+            );
         }
 
         if (hasDateRange) {
-
-            return <>You don't have events within <Code>{dayjs(dateRange[0]).format('DD.MM.YYYY')}</Code> - <Code>{dayjs(dateRange[1]).format('DD.MM.YYYY')}</Code></>
+            return (
+                <>
+                    You don't have events within <Code>{dayjs(dateRange[0]).format("DD.MM.YYYY")}</Code> -{" "}
+                    <Code>{dayjs(dateRange[1]).format("DD.MM.YYYY")}</Code>
+                </>
+            );
         }
     };
 
