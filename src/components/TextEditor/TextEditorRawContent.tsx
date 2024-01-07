@@ -1,13 +1,13 @@
-import { EditorContent, type Content } from '@tiptap/react';
+import { type Content } from '@tiptap/react';
 
 import useTextEditor from "./useTextEditor";
 
-export default function TextEditorContent({ content }: { content: Content }) {
+export default function TextEditorRawContent({ content }: { content: Content }) {
     const editor = useTextEditor({ content, editable: false, injectCSS: false });
 
     if (editor === null || editor?.isDestroyed) {
         return null;
     }
 
-    return <EditorContent editor={editor} />
+    return editor.getText()
 }

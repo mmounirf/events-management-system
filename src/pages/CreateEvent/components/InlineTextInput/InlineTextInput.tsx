@@ -59,10 +59,10 @@ export default function InlineTextInput() {
                             </ActionIcon>
                         </Group>
                     }
-                    rightSectionWidth={100}
+                    rightSectionWidth={90}
                     ref={setTextInputRef}
                     variant="unstyled"
-                    size="xl"
+                    size="lg"
                     placeholder="New event"
                     styles={{
                         input: {

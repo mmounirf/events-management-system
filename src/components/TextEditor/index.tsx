@@ -5,7 +5,7 @@ import { IconCodeDots } from "@tabler/icons-react";
 import { type Editor } from "@tiptap/react";
 
 export default function TextEditor({ label, editor }: { label: string; editor: Editor | null }) {
-    if (editor?.isDestroyed) {
+    if (editor === null || editor?.isDestroyed) {
         return null;
     }
 

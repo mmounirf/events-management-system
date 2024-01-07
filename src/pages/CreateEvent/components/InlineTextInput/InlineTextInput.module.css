@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   border-radius: var(--mantine-radius-md);
-  min-height: 62px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   text-overflow: ellipsis;

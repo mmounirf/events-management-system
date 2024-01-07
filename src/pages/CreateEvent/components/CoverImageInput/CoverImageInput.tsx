@@ -18,13 +18,17 @@ export default function CoverImageInput({ onChange, src }: CoverImageInputProps)
     const onInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         const selectedFile = event.target.files?.[0];
 
+        if (!selectedFile) {
+            return;
+        }
+
         // Events bucket limit for each object is 2MB
         if (selectedFile && selectedFile?.size > 2097152) {
             showError({
-                title: 'The selected image cannot be uploaded.',
-                message: 'The maximum image size is 2MB'
+                title: "The selected image cannot be uploaded.",
+                message: "The maximum image size is 2MB",
             });
-            event.target.value = '';
+            event.target.value = "";
             return;
         }
         onChange(selectedFile);

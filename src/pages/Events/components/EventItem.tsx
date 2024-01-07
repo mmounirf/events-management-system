@@ -1,14 +1,27 @@
-import TextEditorContent from "@/components/TextEditor/TextEditorContent";
+import coverFallbackImage from "@/assets/cover-fallback.jpg";
+import TextEditorRawContent from "@/components/TextEditor/TextEditorRawContent";
 import { Tables } from "@/lib/database.types";
-import { getDateTime } from "@/utils/datetimeHelpers";
-import { Avatar, Flex, Group, Paper, Text, Title, rem } from "@mantine/core";
-import { IconArrowRight, IconCalendarEvent, IconMapPin } from "@tabler/icons-react";
+import { getDateTime, getDiff, timeFromNow } from "@/utils/datetimeHelpers";
+import {
+    Badge,
+    Box,
+    Card,
+    Divider,
+    Flex,
+    Group,
+    Image,
+    Spoiler,
+    Stack,
+    Text,
+    ThemeIcon,
+    Title,
+    rem,
+} from "@mantine/core";
+import { IconArrowRight, IconCalendarEvent, IconCalendarTime, IconHourglass, IconMapPin } from "@tabler/icons-react";
 import dayjs from "dayjs";
 
 export default function EventItem({ event }: { event: Tables<"events"> }) {
-    const { title, start, end, description } = event;
-
-    const { year, month, dayOfMonth, dayOfWeek, hour, minute, ampm, fullDate } = getDateTime(start);
+    const { title, start, end, description, location, logo, cover } = event;
 
     // <Text size="sm" c="dimmed">{getDiff(event.end, event.start) > 1 ? `${getDiff(event.end, event.start)} days event` : '1 day event'}</Text>
 
@@ -17,56 +30,90 @@ export default function EventItem({ event }: { event: Tables<"events"> }) {
     //     <Text size="sm" c="dimmed">{timeFromNow(event.start)}</Text>
     // </Group>
 
-
-    const isSingleDayEvent = dayjs(start).isSame(dayjs(end), 'day')
+    const isSingleDayEvent = dayjs(start).isSame(dayjs(end), "day");
 
     const getEventDate = () => {
         if (isSingleDayEvent) {
-            return (
-                <Group gap={0} align="center">
-                    <IconCalendarEvent
-                        color="var(--mantine-color-dimmed)"
-                        style={{ width: rem(18), height: rem(18) }}
-                        stroke={2}
-                    />
-                    <Text size="sm" c="dimmed">
-                        {getDateTime(event.start).fullDate}
-                    </Text>
-                </Group>
-            );
+            return getDateTime(start).fullDate;
         }
 
         return (
             <Group gap={0} align="center">
-                <IconCalendarEvent color="var(--mantine-color-dimmed)" style={{ width: rem(18), height: rem(18) }} stroke={2} />
                 <Text size="sm" c="dimmed">
-                    {getDateTime(event.start).fullDate}
+                    {getDateTime(start).fullDate}
                 </Text>
                 <IconArrowRight color="var(--mantine-color-dimmed)" style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                 <Text size="sm" c="dimmed">
-                    {getDateTime(event.end).fullDate}
+                    {getDateTime(end).fullDate}
                 </Text>
             </Group>
         );
     };
 
     return (
-        <Paper withBorder p="md">
-            <Group align="center">
-                <Avatar size="xl" />
-                <Flex direction="column">
-                    <Title>{title}</Title>
-                    <Group gap={0} align="center">
-                        <IconMapPin color="var(--mantine-color-dimmed)" style={{ width: rem(18), height: rem(18) }} stroke={2} />
-                        <Text size="sm" c="dimmed">
-                            {event.location}
-                        </Text>
-                    </Group>
+        <Card withBorder p="md">
+            <Card.Section pos="relative">
+                <Badge variant="dot" size="sm" pos="absolute" inset="20px 20px 0 auto">
+                    {timeFromNow(start)}
+                </Badge>
 
-                    {getEventDate()}
+                <Image loading="lazy" src={cover} alt={title} height={150} fit="cover" fallbackSrc={coverFallbackImage} />
+            </Card.Section>
+            <Card.Section pos="relative" h={40}>
+                <Flex
+                    style={{
+                        boxShadow: "var(--mantine-shadow-md)",
+                        borderRadius: "100%",
+                        background: "var(--mantine-color-body)",
+                    }}
+                    w={80}
+                    h={80}
+                    m="auto"
+                    pos="absolute"
+                    inset="-40px 0 0 0"
+                    align="center"
+                    justify="center"
+                >
+                    {logo === null ? (
+                        <ThemeIcon size="60" radius="100%">
+                            <IconCalendarEvent stroke={1.5} style={{ width: rem(40), height: rem(40) }} />
+                        </ThemeIcon>
+                    ) : (
+                        <Image h={60} w={60} loading="lazy" src={logo} fit="contain" />
+                    )}
                 </Flex>
-            </Group>
-            <TextEditorContent content={event.description} />
-        </Paper>
+            </Card.Section>
+            <Card.Section>
+                <Stack gap="xs">
+                    <Title order={2} ta="center">
+                        {title}
+                    </Title>
+                    <Divider />
+                    <Stack px="md" gap="xs">
+                        <Group gap="xs" fz="sm" c="dimmed">
+                            <IconHourglass style={{ width: rem(20), height: rem(20) }} />
+                            {getDiff(event.end, event.start) > 1 ? `${getDiff(event.end, event.start)} days event` : "1 day event"}
+                        </Group>
+
+                        <Group gap="xs" fz="sm" c="dimmed">
+                            <IconCalendarTime style={{ width: rem(20), height: rem(20) }} />
+                            {getEventDate()}
+                        </Group>
+
+                        <Group gap="xs" fz="sm" c="dimmed">
+                            <IconMapPin style={{ width: rem(20), height: rem(20) }} />
+                            {location}
+                        </Group>
+                    </Stack>
+                    <Divider />
+
+                    <Box p="md" pt="0">
+                        <Spoiler maxHeight={100} showLabel="Read more" hideLabel="Show less" c="dimmed">
+                            <TextEditorRawContent content={description} />
+                        </Spoiler>
+                    </Box>
+                </Stack>
+            </Card.Section>
+        </Card>
     );
 }
