@@ -1,7 +1,8 @@
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { showError } from "@/utils/errorNotification";
-import { Flex, Paper, PinInput, Stack, Title } from "@mantine/core";
+import useIsMobile from "@/utils/useIsMobile";
+import { Container, Flex, Paper, PinInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -27,6 +28,7 @@ export default function Verify() {
     const otpRegex = new RegExp('^[0-9]{6}$');
     const isValidOtp = otpRegex.test(form.values.otp);
     const isValidEmail = email !== null;
+    const isMobile = useIsMobile()
 
     useEffect(() => {
         if (email === null) {
@@ -55,15 +57,16 @@ export default function Verify() {
     }
 
     return (
-        <Flex direction="column" align="center" justify="center" gap="lg" mih="100vh">
-            <Title order={2} fw={500} mb="lg">
-                Verify your account
-            </Title>
-            <Paper p="xl" withBorder w={500}>
-                <Stack>
-                    <PinInput {...form.getInputProps('otp')} name="otp" autoFocus size="xl" length={6} placeholder="—" type="number" inputMode="numeric" onComplete={verify} oneTimeCode />
-                </Stack>
-            </Paper>
-        </Flex>
+        <Container>
+            <Flex direction="column" align="center" justify="center" gap="lg" mih="100vh" w="100%">
+                <Title order={2} fw={500} mb="lg">
+                    Verify your account
+                </Title>
+                <Paper p="xl" withBorder maw={500} w="100%">
+                    <PinInput {...form.getInputProps('otp')} name="otp" autoFocus size={isMobile ? 'xs' : 'xl'} length={6} placeholder="—" type="number" inputMode="numeric" onComplete={verify} oneTimeCode />
+
+                </Paper>
+            </Flex>
+        </Container>
     );
 }
