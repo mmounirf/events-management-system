@@ -1,4 +1,4 @@
-import { Tables } from "@/lib/database.types";
+import type { Tables } from "@/lib/database.types";
 import { createFormContext } from "@mantine/form";
 
 export type FormValues = Omit<Tables<"events">, "id" | "owner" | "created_at">;
