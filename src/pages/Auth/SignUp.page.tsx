@@ -4,11 +4,9 @@ import { IconArrowRight, IconMail } from "@tabler/icons-react";
 
 import { supabase } from "@/lib/supabase";
 import { showError } from "@/utils/errorNotification";
-import useIsMobile from "@/utils/useIsMobile";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUpPage() {
-	const isMobile = useIsMobile();
 	const navigate = useNavigate();
 	const form = useForm({
 		initialValues: {
@@ -61,7 +59,7 @@ export default function SignUpPage() {
 					</form>
 
 					<Text c="dimmed" size="xs">
-						<span>Already have an Eventor account? </span>
+						<span>Already have an Eventor account?</span>
 						<Anchor component={Link} to="/signin">
 							Sign in
 						</Anchor>

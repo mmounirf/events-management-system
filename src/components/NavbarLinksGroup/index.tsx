@@ -1,12 +1,14 @@
 import { ActionIcon, Box, Collapse, Group, ThemeIcon, rem } from "@mantine/core";
-import { IconChevronRight, type TablerIconsProps } from "@tabler/icons-react";
-import { type MouseEventHandler, useState } from "react";
+import { IconChevronRight, type IconProps } from "@tabler/icons-react";
+import { type ForwardRefExoticComponent, type FunctionComponent, type MouseEventHandler, useState } from "react";
 import { NavLink as RouterLink } from "react-router-dom";
 import classes from "./NavbarLinksGroup.module.css";
 import { routes } from "./routes";
 
+type Icon = FunctionComponent<IconProps>;
+
 interface LinksGroupProps {
-	icon: React.FC<TablerIconsProps>;
+	icon: ForwardRefExoticComponent<Omit<IconProps, "ref"> & React.RefAttributes<Icon>>;
 	label: string;
 	initiallyOpened?: boolean;
 	to: string;

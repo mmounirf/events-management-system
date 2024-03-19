@@ -4,6 +4,8 @@ import "@mantine/tiptap/styles.css";
 import { IconCodeDots } from "@tabler/icons-react";
 import type { Editor } from "@tiptap/react";
 
+const CodeIcon = () => <IconCodeDots />;
+
 export default function TextEditor({ label, editor }: { label: string; editor: Editor | null }) {
 	if (editor === null || editor?.isDestroyed) {
 		return null;
@@ -37,7 +39,7 @@ export default function TextEditor({ label, editor }: { label: string; editor: E
 						</Tooltip>
 
 						<Tooltip label="Inline Code" withArrow>
-							<RichTextEditor.Code icon={IconCodeDots} />
+							<RichTextEditor.Code icon={CodeIcon} />
 						</Tooltip>
 
 						<Tooltip label="Code Block" withArrow>

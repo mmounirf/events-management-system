@@ -4,13 +4,11 @@ import { IconArrowRight, IconMail } from "@tabler/icons-react";
 
 import { supabase } from "@/lib/supabase";
 import { showError } from "@/utils/errorNotification";
-import useIsMobile from "@/utils/useIsMobile";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignIn() {
 	const [loading, setLoading] = useState(false);
-	const isMobile = useIsMobile();
 	const navigate = useNavigate();
 
 	const form = useForm({
@@ -68,7 +66,7 @@ export default function SignIn() {
 					</form>
 
 					<Text c="dimmed" size="xs">
-						<span>Don't have an account? </span>
+						<span>Don't have an account?</span>
 						<Anchor component={Link} to="/signup">
 							Sign up
 						</Anchor>
